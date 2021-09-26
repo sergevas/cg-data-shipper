@@ -1,0 +1,15 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://192.168.1.90:8080
+functions:
+  cg-data-shipper:
+    lang: quarkus-native
+    handler: ./cg-data-shipper
+    image: cgsergevas/cg-data-shipper:latest
+    annotations:
+      topic: "cg.growlabv1.LIGHT"
+    environment:
+      CG_DATA_LOGGER_URL: http://192.168.1.74:8080/cg-data-logger
+      # CG_NATS_SERVERS: "10.62.0.1"
+      # CG_NATS_SUBJECT_GROWLABV1: "cg.growlabv1.*"
