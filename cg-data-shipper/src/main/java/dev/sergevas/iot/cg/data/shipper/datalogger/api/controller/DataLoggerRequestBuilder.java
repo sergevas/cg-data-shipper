@@ -15,6 +15,7 @@ public class DataLoggerRequestBuilder {
     private static final String TEMPERATURE = "temperature";
     private static final String PRESSURE = "pressure";
     private static final String HUMIDITY = "humidity";
+    private static final String LIGHT = "light";
 
     private String sensor;
     private String cpuTemperature;
@@ -22,6 +23,7 @@ public class DataLoggerRequestBuilder {
     private String temperature;
     private String pressure;
     private String humidity;
+    private String light;
 
     public DataLoggerRequestBuilder sensor(String sensor) {
         this.sensor = sensor;
@@ -53,6 +55,11 @@ public class DataLoggerRequestBuilder {
         return this;
     }
 
+    public DataLoggerRequestBuilder light(String light) {
+        this.light = light;
+        return this;
+    }
+
     public JsonObject build() {
         return Json.createObjectBuilder()
                 .add(SENSOR, sensor)
@@ -61,6 +68,7 @@ public class DataLoggerRequestBuilder {
                 .add(TEMPERATURE, temperature)
                 .add(PRESSURE, pressure)
                 .add(HUMIDITY, humidity)
+                .add(LIGHT, light)
                 .build();
     }
 
@@ -69,17 +77,15 @@ public class DataLoggerRequestBuilder {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DataLoggerRequestBuilder that = (DataLoggerRequestBuilder) o;
-        return Objects.equals(sensor, that.sensor)
-                && Objects.equals(cpuTemperature, that.cpuTemperature)
-                && Objects.equals(isoTime, that.isoTime)
-                && Objects.equals(temperature, that.temperature)
-                && Objects.equals(pressure, that.pressure)
-                && Objects.equals(humidity, that.humidity);
+        return Objects.equals(sensor, that.sensor) && Objects.equals(cpuTemperature, that.cpuTemperature)
+                && Objects.equals(isoTime, that.isoTime) && Objects.equals(temperature, that.temperature)
+                && Objects.equals(pressure, that.pressure) && Objects.equals(humidity, that.humidity)
+                && Objects.equals(light, that.light);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity);
+        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light);
     }
 
     @Override
@@ -91,6 +97,7 @@ public class DataLoggerRequestBuilder {
                 ", temperature='" + temperature + '\'' +
                 ", pressure='" + pressure + '\'' +
                 ", humidity='" + humidity + '\'' +
+                ", light='" + light + '\'' +
                 '}';
     }
 }

@@ -1,9 +1,12 @@
 package dev.sergevas.iot.cg.data.shipper.function.boundary;
 
+import dev.sergevas.iot.cg.data.shipper.datalogger.api.boundary.DataLoggerApi;
 import dev.sergevas.iot.cg.data.shipper.function.controller.DataTransformService;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,10 +23,17 @@ public class DataShipperResource {
     @Inject
     DataTransformService dataTransformService;
 
+    @Inject
+    @RestClient
+    DataLoggerApi dataLoggerApi;
+
     @POST
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     public Response postReadings(byte[] readings) {
-        logger.info("Have got sensor readings: " + new String(readings, Charset.forName("UTF-8")));
+        String marshalledReadingsData = new String(readings, Charset.forName("UTF-8"));
+        logger.info("Have got sensor readings: " + marshalledReadingsData);
+        JsonObject request = dataTransformService.toDataLoggerRequest(marshalledReadingsData);
+//        dataLoggerApi.postSensorData(request);
         return Response
                 .noContent()
                 .status(Response.Status.ACCEPTED)
