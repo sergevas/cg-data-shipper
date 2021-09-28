@@ -2,7 +2,9 @@ package dev.sergevas.iot.cg.data.shipper.datalogger.api.controller;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import java.util.Objects;
+import java.util.Optional;
 
 public class DataLoggerRequestBuilder {
 
@@ -61,15 +63,21 @@ public class DataLoggerRequestBuilder {
     }
 
     public JsonObject build() {
-        return Json.createObjectBuilder()
-                .add(SENSOR, sensor)
-                .add(ISO_TIME, isoTime)
-                .add(CPU_TEMPERATURE, cpuTemperature)
-                .add(TEMPERATURE, temperature)
-                .add(PRESSURE, pressure)
-                .add(HUMIDITY, humidity)
-                .add(LIGHT, light)
-                .build();
+        JsonObjectBuilder job = Json.createObjectBuilder();
+        addIfNotNull(job, SENSOR, sensor)
+                .addIfNotNull(job, ISO_TIME, isoTime)
+                .addIfNotNull(job, CPU_TEMPERATURE, cpuTemperature)
+                .addIfNotNull(job, TEMPERATURE, temperature)
+                .addIfNotNull(job, PRESSURE, pressure)
+                .addIfNotNull(job, HUMIDITY, humidity)
+                .addIfNotNull(job, LIGHT, light);
+        return job.build();
+    }
+
+    public DataLoggerRequestBuilder addIfNotNull(JsonObjectBuilder jsonObjectBuilder,  String name, String value) {
+        Optional.ofNullable(value)
+                .ifPresent(v -> jsonObjectBuilder.add(name, value));
+        return this;
     }
 
     @Override

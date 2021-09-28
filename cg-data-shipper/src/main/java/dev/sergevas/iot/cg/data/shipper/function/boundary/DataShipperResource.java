@@ -33,7 +33,9 @@ public class DataShipperResource {
         String marshalledReadingsData = new String(readings, Charset.forName("UTF-8"));
         logger.info("Have got sensor readings: " + marshalledReadingsData);
         JsonObject request = dataTransformService.toDataLoggerRequest(marshalledReadingsData);
-//        dataLoggerApi.postSensorData(request);
+        logger.info("sendDataLoggerRequestStart: " + request);
+        Response response = dataLoggerApi.postSensorData(request);
+        logger.info("sendDataLoggerRequestComplete: " + response);
         return Response
                 .noContent()
                 .status(Response.Status.ACCEPTED)
