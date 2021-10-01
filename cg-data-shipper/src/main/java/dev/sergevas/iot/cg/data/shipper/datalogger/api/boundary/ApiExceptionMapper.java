@@ -13,13 +13,18 @@
 package dev.sergevas.iot.cg.data.shipper.datalogger.api.boundary;
 
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
+import org.jboss.logging.Logger;
 
+import javax.inject.Inject;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 @Provider
 public class ApiExceptionMapper implements ResponseExceptionMapper<ApiException> {
+
+  @Inject
+  Logger logger;
 
   @Override
   public boolean handles(int status, MultivaluedMap<String, Object> headers) {
@@ -28,6 +33,7 @@ public class ApiExceptionMapper implements ResponseExceptionMapper<ApiException>
 
   @Override
   public ApiException toThrowable(Response response) {
+    logger.error(response);
     return new ApiException(response);
   }
 }

@@ -10,4 +10,10 @@ public class SharedNames {
     public static final String NAME = "name";
     public static final String SYSTEM_INFO = "systemInfo";
     public static final String CPU_TEMP = "cpuTemp";
+    public static final String STATUS = "status";
+    public static final String DISK_SPACE = "diskSpace";
+    public static final String HEAP_MEMORY = "heapMemory";
+    public static final String FREE_BYTES = "freeBytes";
+    public static final String MAX_BYTES = "maxBytes";
+    public static final String TOTAL_BYTES = "totalBytes";
 }

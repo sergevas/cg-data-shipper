@@ -23,7 +23,13 @@ class DataTransformServiceTest {
         JsonObject expectedHealthObj = Json.createObjectBuilder()
                 .add("sensor", "growlabv1")
                 .add("iso_time", "2021-09-28T11:38:49Z")
-                .add("cpu_temperature", "43.312")
+                .add("status", "UP")
+                .add("cpu_temperature", 43.312)
+                .add("disk_space_total", 31116636160L)
+                .add("disk_space_free", 21696647168L)
+                .add("heap_memory_total", 32575488)
+                .add("heap_memory_free", 10793312)
+                .add("heap_memory_max", 64880640)
                 .build();
         assertEquals(expectedHealthObj, dataTransformService.toDataLoggerRequest(healthMsg));
 
@@ -33,7 +39,7 @@ class DataTransformServiceTest {
         JsonObject expectedLightObj = Json.createObjectBuilder()
                 .add("sensor", "growlabv1")
                 .add("iso_time", "2021-09-28T11:38:30.210143Z")
-                .add("light", "1783.33")
+                .add("light", 1783.33)
                 .build();
         assertEquals(expectedLightObj, dataTransformService.toDataLoggerRequest(lightMsg));
 
@@ -43,7 +49,7 @@ class DataTransformServiceTest {
         JsonObject expectedTempObj = Json.createObjectBuilder()
                 .add("sensor", "growlabv1")
                 .add("iso_time", "2021-09-28T12:33:00.218963Z")
-                .add("temperature", "23.742282452486688")
+                .add("temperature", 23.742282452486688)
                 .build();
         assertEquals(expectedTempObj, dataTransformService.toDataLoggerRequest(tempMsg));
 
@@ -53,7 +59,7 @@ class DataTransformServiceTest {
         JsonObject expectedPressObj = Json.createObjectBuilder()
                 .add("sensor", "growlabv1")
                 .add("iso_time", "2021-09-28T12:33:00.218963Z")
-                .add("pressure", "101166.07255874875")
+                .add("pressure", 101166.07255874875)
                 .build();
         assertEquals(expectedPressObj, dataTransformService.toDataLoggerRequest(pressMsg));
 
@@ -63,7 +69,7 @@ class DataTransformServiceTest {
         JsonObject expectedHumidObj = Json.createObjectBuilder()
                 .add("sensor", "growlabv1")
                 .add("iso_time", "2021-09-28T12:33:09.966873Z")
-                .add("humidity", "55.86345305351051")
+                .add("humidity", 55.86345305351051)
                 .build();
         assertEquals(expectedHumidObj, dataTransformService.toDataLoggerRequest(humidMsg));
     }

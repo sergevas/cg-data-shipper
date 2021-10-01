@@ -18,21 +18,34 @@ public class DataLoggerRequestBuilder {
     private static final String PRESSURE = "pressure";
     private static final String HUMIDITY = "humidity";
     private static final String LIGHT = "light";
+    private static final String STATUS = "status";
+    public static final String DISK_SPACE_TOTAL = "disk_space_total";
+    public static final String DISK_SPACE_FREE = "disk_space_free";
+    public static final String HEAP_MEMORY_TOTAL = "heap_memory_total";
+    public static final String HEAP_MEMORY_FREE = "heap_memory_free";
+    public static final String HEAP_MEMORY_MAX = "heap_memory_max";
 
     private String sensor;
-    private String cpuTemperature;
+    private Double cpuTemperature;
     private String isoTime;
-    private String temperature;
-    private String pressure;
-    private String humidity;
-    private String light;
+    private Double temperature;
+    private Double pressure;
+    private Double humidity;
+    private Double light;
+    private String status;
+    private Long diskSpaceTotal;
+    private Long diskSpaceFree;
+    private Long heapMemoryTotal;
+    private Long heapMemoryFree;
+    private Long heapMemoryMax;
+
 
     public DataLoggerRequestBuilder sensor(String sensor) {
         this.sensor = sensor;
         return this;
     }
 
-    public DataLoggerRequestBuilder cpuTemperature(String cpuTemperature) {
+    public DataLoggerRequestBuilder cpuTemperature(Double cpuTemperature) {
         this.cpuTemperature = cpuTemperature;
         return this;
     }
@@ -42,39 +55,87 @@ public class DataLoggerRequestBuilder {
         return this;
     }
 
-    public DataLoggerRequestBuilder temperature(String temperature) {
+    public DataLoggerRequestBuilder temperature(Double temperature) {
         this.temperature = temperature;
         return this;
     }
 
-    public DataLoggerRequestBuilder pressure(String pressure) {
+    public DataLoggerRequestBuilder pressure(Double pressure) {
         this.pressure = pressure;
         return this;
     }
 
-    public DataLoggerRequestBuilder humidity(String humidity) {
+    public DataLoggerRequestBuilder humidity(Double humidity) {
         this.humidity = humidity;
         return this;
     }
 
-    public DataLoggerRequestBuilder light(String light) {
+    public DataLoggerRequestBuilder light(Double light) {
         this.light = light;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder status(String status) {
+        this.status = status;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder diskSpaceTotal(Long diskSpaceTotal) {
+        this.diskSpaceTotal = diskSpaceTotal;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder diskSpaceFree(Long diskSpaceFree) {
+        this.diskSpaceFree = diskSpaceFree;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder heapMemoryTotal(Long heapMemoryTotal) {
+        this.heapMemoryTotal = heapMemoryTotal;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder heapMemoryFree(Long heapMemoryFree) {
+        this.heapMemoryFree = heapMemoryFree;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder heapMemoryMax(Long heapMemoryMax) {
+        this.heapMemoryMax = heapMemoryMax;
         return this;
     }
 
     public JsonObject build() {
         JsonObjectBuilder job = Json.createObjectBuilder();
-        addIfNotNull(job, SENSOR, sensor)
-                .addIfNotNull(job, ISO_TIME, isoTime)
-                .addIfNotNull(job, CPU_TEMPERATURE, cpuTemperature)
-                .addIfNotNull(job, TEMPERATURE, temperature)
-                .addIfNotNull(job, PRESSURE, pressure)
-                .addIfNotNull(job, HUMIDITY, humidity)
-                .addIfNotNull(job, LIGHT, light);
+        addStringIfNotNull(job, SENSOR, sensor)
+                .addStringIfNotNull(job, ISO_TIME, isoTime)
+                .addDoubleIfNotNull(job, CPU_TEMPERATURE, cpuTemperature)
+                .addDoubleIfNotNull(job, TEMPERATURE, temperature)
+                .addDoubleIfNotNull(job, PRESSURE, pressure)
+                .addDoubleIfNotNull(job, HUMIDITY, humidity)
+                .addDoubleIfNotNull(job, LIGHT, light)
+                .addStringIfNotNull(job, STATUS, status)
+                .addLongIfNotNull(job, DISK_SPACE_TOTAL, diskSpaceTotal)
+                .addLongIfNotNull(job, DISK_SPACE_FREE, diskSpaceFree)
+                .addLongIfNotNull(job, HEAP_MEMORY_TOTAL, heapMemoryTotal)
+                .addLongIfNotNull(job, HEAP_MEMORY_FREE, heapMemoryFree)
+                .addLongIfNotNull(job, HEAP_MEMORY_MAX, heapMemoryMax);
         return job.build();
     }
 
-    public DataLoggerRequestBuilder addIfNotNull(JsonObjectBuilder jsonObjectBuilder,  String name, String value) {
+    public DataLoggerRequestBuilder addStringIfNotNull(JsonObjectBuilder jsonObjectBuilder,  String name, String value) {
+        Optional.ofNullable(value)
+                .ifPresent(v -> jsonObjectBuilder.add(name, value));
+        return this;
+    }
+
+    public DataLoggerRequestBuilder addLongIfNotNull(JsonObjectBuilder jsonObjectBuilder, String name, Long value) {
+        Optional.ofNullable(value)
+                .ifPresent(v -> jsonObjectBuilder.add(name, value));
+        return this;
+    }
+
+    public DataLoggerRequestBuilder addDoubleIfNotNull(JsonObjectBuilder jsonObjectBuilder,  String name, Double value) {
         Optional.ofNullable(value)
                 .ifPresent(v -> jsonObjectBuilder.add(name, value));
         return this;
@@ -88,24 +149,34 @@ public class DataLoggerRequestBuilder {
         return Objects.equals(sensor, that.sensor) && Objects.equals(cpuTemperature, that.cpuTemperature)
                 && Objects.equals(isoTime, that.isoTime) && Objects.equals(temperature, that.temperature)
                 && Objects.equals(pressure, that.pressure) && Objects.equals(humidity, that.humidity)
-                && Objects.equals(light, that.light);
+                && Objects.equals(light, that.light) && Objects.equals(status, that.status)
+                && Objects.equals(diskSpaceTotal, that.diskSpaceTotal) && Objects.equals(diskSpaceFree, that.diskSpaceFree)
+                && Objects.equals(heapMemoryTotal, that.heapMemoryTotal) && Objects.equals(heapMemoryFree, that.heapMemoryFree)
+                && Objects.equals(heapMemoryMax, that.heapMemoryMax);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light);
+        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light, status,
+                diskSpaceTotal, diskSpaceFree, heapMemoryTotal, heapMemoryFree, heapMemoryMax);
     }
 
     @Override
     public String toString() {
         return "DataLoggerRequestBuilder{" +
                 "sensor='" + sensor + '\'' +
-                ", cpuTemperature='" + cpuTemperature + '\'' +
+                ", cpuTemperature=" + cpuTemperature +
                 ", isoTime='" + isoTime + '\'' +
-                ", temperature='" + temperature + '\'' +
-                ", pressure='" + pressure + '\'' +
-                ", humidity='" + humidity + '\'' +
-                ", light='" + light + '\'' +
+                ", temperature=" + temperature +
+                ", pressure=" + pressure +
+                ", humidity=" + humidity +
+                ", light=" + light +
+                ", status='" + status + '\'' +
+                ", diskSpaceTotal=" + diskSpaceTotal +
+                ", diskSpaceFree=" + diskSpaceFree +
+                ", heapMemoryTotal=" + heapMemoryTotal +
+                ", heapMemoryFree=" + heapMemoryFree +
+                ", heapMemoryMax=" + heapMemoryMax +
                 '}';
     }
 }

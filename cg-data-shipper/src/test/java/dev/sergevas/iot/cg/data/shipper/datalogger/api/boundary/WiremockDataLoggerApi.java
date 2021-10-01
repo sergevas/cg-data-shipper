@@ -21,8 +21,8 @@ public class WiremockDataLoggerApi implements QuarkusTestResourceLifecycleManage
         stubFor(post(urlEqualTo("/"))
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(containing("{\"sensor\":\"BME280\",\"iso_time\":\"2021-09-26T12:08:41.036071Z\"," +
-                        "\"cpu_temperature\":\"42.31\",\"temperature\":\"20.50684803207987\"," +
-                        "\"pressure\":\"98912.31262893083\",\"humidity\":\"61.19329773080077\"}"))
+                        "\"cpu_temperature\":42.31,\"temperature\":20.50684803207987," +
+                        "\"pressure\":98912.31262893083,\"humidity\":61.19329773080077}"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 

@@ -8,6 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.*;
 import java.io.StringReader;
+import java.util.Optional;
 
 import static dev.sergevas.iot.cg.data.shipper.function.model.SharedNames.*;
 
@@ -30,27 +31,80 @@ public class DataTransformService {
                 .isoTime(readAt);
         switch (dataType) {
             case TEMP:
-                requestBuilder.temperature(dataObj.getString(VALUE));
+                requestBuilder.temperature(Optional.ofNullable(dataObj.getString(VALUE))
+                        .map(Double::valueOf)
+                        .orElse(null));
                 break;
             case HUMID:
-                requestBuilder.humidity(dataObj.getString(VALUE));
+                requestBuilder.humidity(Optional.ofNullable(dataObj.getString(VALUE))
+                        .map(Double::valueOf)
+                        .orElse(null));
                 break;
             case PRESS:
-                requestBuilder.pressure(dataObj.getString(VALUE));
+                requestBuilder.pressure(Optional.ofNullable(dataObj.getString(VALUE))
+                        .map(Double::valueOf)
+                        .orElse(null));
                 break;
             case LIGHT:
-                requestBuilder.light(dataObj.getString(VALUE));
+                requestBuilder.light(Optional.ofNullable(dataObj.getString(VALUE))
+                        .map(Double::valueOf)
+                        .orElse(null));
                 break;
             case HEALTH:
                 JsonObject healthObj = dataObj.getJsonObject(VALUE);
+                requestBuilder.status(healthObj.getString(STATUS));
+
                 JsonArray checksArr = healthObj.getJsonArray(CHECKS);
-                String cpuTemperature = checksArr.stream()
+
+                checksArr.stream()
                         .map(JsonValue::asJsonObject)
                         .filter(jsonObj -> SYSTEM_INFO.equals(jsonObj.getString(NAME)))
                         .findAny()
                         .map(jsonObj -> jsonObj.getJsonObject(DATA).getString(CPU_TEMP))
-                        .orElse(null);
-                requestBuilder.cpuTemperature(cpuTemperature);
+                        .map(Double::valueOf)
+                        .ifPresent(cpuTemperature -> requestBuilder.cpuTemperature(cpuTemperature));
+                ;
+
+                checksArr.stream()
+                        .map(JsonValue::asJsonObject)
+                        .filter(jsonObj -> DISK_SPACE.equals(jsonObj.getString(NAME)))
+                        .findAny()
+                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(FREE_BYTES))
+                        .map(JsonNumber::longValue)
+                        .ifPresent(diskSpaceFree -> requestBuilder.diskSpaceFree(diskSpaceFree));
+
+                checksArr.stream()
+                        .map(JsonValue::asJsonObject)
+                        .filter(jsonObj -> DISK_SPACE.equals(jsonObj.getString(NAME)))
+                        .findAny()
+                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(TOTAL_BYTES))
+                        .map(JsonNumber::longValue)
+                        .ifPresent(diskSpaceTotal -> requestBuilder.diskSpaceTotal(diskSpaceTotal));
+
+                checksArr.stream()
+                        .map(JsonValue::asJsonObject)
+                        .filter(jsonObj -> HEAP_MEMORY.equals(jsonObj.getString(NAME)))
+                        .findAny()
+                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(FREE_BYTES))
+                        .map(JsonNumber::longValue)
+                        .ifPresent(heapMemoryFree -> requestBuilder.heapMemoryFree(heapMemoryFree));
+
+                checksArr.stream()
+                        .map(JsonValue::asJsonObject)
+                        .filter(jsonObj -> HEAP_MEMORY.equals(jsonObj.getString(NAME)))
+                        .findAny()
+                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(TOTAL_BYTES))
+                        .map(JsonNumber::longValue)
+                        .ifPresent(heapMemoryTotal -> requestBuilder.heapMemoryTotal(heapMemoryTotal));
+
+                checksArr.stream()
+                        .map(JsonValue::asJsonObject)
+                        .filter(jsonObj -> HEAP_MEMORY.equals(jsonObj.getString(NAME)))
+                        .findAny()
+                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(MAX_BYTES))
+                        .map(JsonNumber::longValue)
+                        .ifPresent(heapMemoryMax -> requestBuilder.heapMemoryMax(heapMemoryMax));
+
         }
         dataLoggerRequestObj = requestBuilder.build();
         return dataLoggerRequestObj;
