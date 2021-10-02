@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public class DataLoggerRequestBuilder {
 
-    public static final String BME280 = "BME280";
-
     private static final String SENSOR = "sensor";
     private static final String CPU_TEMPERATURE = "cpu_temperature";
     private static final String ISO_TIME = "iso_time";
@@ -24,6 +22,7 @@ public class DataLoggerRequestBuilder {
     public static final String HEAP_MEMORY_TOTAL = "heap_memory_total";
     public static final String HEAP_MEMORY_FREE = "heap_memory_free";
     public static final String HEAP_MEMORY_MAX = "heap_memory_max";
+    public static final String HEAP_MEMORY_USED = "heap_memory_used";
 
     private String sensor;
     private Double cpuTemperature;
@@ -38,6 +37,7 @@ public class DataLoggerRequestBuilder {
     private Long heapMemoryTotal;
     private Long heapMemoryFree;
     private Long heapMemoryMax;
+    private Long heapMemoryUsed;
 
 
     public DataLoggerRequestBuilder sensor(String sensor) {
@@ -105,6 +105,11 @@ public class DataLoggerRequestBuilder {
         return this;
     }
 
+    public DataLoggerRequestBuilder heapMemoryUsed(Long heapMemoryUsed) {
+        this.heapMemoryUsed = heapMemoryUsed;
+        return this;
+    }
+
     public JsonObject build() {
         JsonObjectBuilder job = Json.createObjectBuilder();
         addStringIfNotNull(job, SENSOR, sensor)
@@ -119,7 +124,8 @@ public class DataLoggerRequestBuilder {
                 .addLongIfNotNull(job, DISK_SPACE_FREE, diskSpaceFree)
                 .addLongIfNotNull(job, HEAP_MEMORY_TOTAL, heapMemoryTotal)
                 .addLongIfNotNull(job, HEAP_MEMORY_FREE, heapMemoryFree)
-                .addLongIfNotNull(job, HEAP_MEMORY_MAX, heapMemoryMax);
+                .addLongIfNotNull(job, HEAP_MEMORY_MAX, heapMemoryMax)
+                .addLongIfNotNull(job, HEAP_MEMORY_USED, heapMemoryUsed);
         return job.build();
     }
 
@@ -152,13 +158,12 @@ public class DataLoggerRequestBuilder {
                 && Objects.equals(light, that.light) && Objects.equals(status, that.status)
                 && Objects.equals(diskSpaceTotal, that.diskSpaceTotal) && Objects.equals(diskSpaceFree, that.diskSpaceFree)
                 && Objects.equals(heapMemoryTotal, that.heapMemoryTotal) && Objects.equals(heapMemoryFree, that.heapMemoryFree)
-                && Objects.equals(heapMemoryMax, that.heapMemoryMax);
+                && Objects.equals(heapMemoryMax, that.heapMemoryMax) && Objects.equals(heapMemoryUsed, that.heapMemoryUsed);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light, status,
-                diskSpaceTotal, diskSpaceFree, heapMemoryTotal, heapMemoryFree, heapMemoryMax);
+        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light, status, diskSpaceTotal, diskSpaceFree, heapMemoryTotal, heapMemoryFree, heapMemoryMax, heapMemoryUsed);
     }
 
     @Override
@@ -177,6 +182,7 @@ public class DataLoggerRequestBuilder {
                 ", heapMemoryTotal=" + heapMemoryTotal +
                 ", heapMemoryFree=" + heapMemoryFree +
                 ", heapMemoryMax=" + heapMemoryMax +
+                ", heapMemoryUsed=" + heapMemoryUsed +
                 '}';
     }
 }

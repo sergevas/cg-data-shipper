@@ -30,6 +30,7 @@ class DataTransformServiceTest {
                 .add("heap_memory_total", 32575488)
                 .add("heap_memory_free", 10793312)
                 .add("heap_memory_max", 64880640)
+                .add("heap_memory_used", 21782176)
                 .build();
         assertEquals(expectedHealthObj, dataTransformService.toDataLoggerRequest(healthMsg));
 

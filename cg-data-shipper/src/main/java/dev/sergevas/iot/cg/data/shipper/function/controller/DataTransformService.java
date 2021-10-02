@@ -25,8 +25,8 @@ public class DataTransformService {
         JsonObject dataObj = shipperRequestObj.getJsonObject(DATA);
         String typeCode = dataObj.getString(TYPE);
         DataType dataType = DataType.getByCode(typeCode);
-        JsonObject dataLoggerRequestObj = null;
-        DataLoggerRequestBuilder requestBuilder = new DataLoggerRequestBuilder()
+        JsonObject dataLoggerRequestObj;
+        final DataLoggerRequestBuilder requestBuilder = new DataLoggerRequestBuilder()
                 .sensor(deviceName)
                 .isoTime(readAt);
         switch (dataType) {
@@ -85,26 +85,32 @@ public class DataTransformService {
                         .map(JsonValue::asJsonObject)
                         .filter(jsonObj -> HEAP_MEMORY.equals(jsonObj.getString(NAME)))
                         .findAny()
-                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(FREE_BYTES))
+                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(MAX_BYTES))
                         .map(JsonNumber::longValue)
-                        .ifPresent(heapMemoryFree -> requestBuilder.heapMemoryFree(heapMemoryFree));
+                        .ifPresent(heapMemoryMax -> requestBuilder.heapMemoryMax(heapMemoryMax));
 
-                checksArr.stream()
+                final Long heapMemoryTotal = checksArr.stream()
                         .map(JsonValue::asJsonObject)
                         .filter(jsonObj -> HEAP_MEMORY.equals(jsonObj.getString(NAME)))
                         .findAny()
                         .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(TOTAL_BYTES))
                         .map(JsonNumber::longValue)
-                        .ifPresent(heapMemoryTotal -> requestBuilder.heapMemoryTotal(heapMemoryTotal));
+                        .orElse(null);
+                requestBuilder.heapMemoryTotal(heapMemoryTotal);
 
-                checksArr.stream()
+                final Long heapMemoryFree = checksArr.stream()
                         .map(JsonValue::asJsonObject)
                         .filter(jsonObj -> HEAP_MEMORY.equals(jsonObj.getString(NAME)))
                         .findAny()
-                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(MAX_BYTES))
+                        .map(jsonObj -> jsonObj.getJsonObject(DATA).getJsonNumber(FREE_BYTES))
                         .map(JsonNumber::longValue)
-                        .ifPresent(heapMemoryMax -> requestBuilder.heapMemoryMax(heapMemoryMax));
+                        .orElse(null);
+                requestBuilder.heapMemoryFree(heapMemoryFree);
 
+                Optional.ofNullable(heapMemoryTotal)
+                        .ifPresent(hmt -> Optional.ofNullable(heapMemoryFree)
+                                .ifPresent(hmf -> requestBuilder
+                                        .heapMemoryUsed(heapMemoryTotal - heapMemoryFree)));
         }
         dataLoggerRequestObj = requestBuilder.build();
         return dataLoggerRequestObj;
