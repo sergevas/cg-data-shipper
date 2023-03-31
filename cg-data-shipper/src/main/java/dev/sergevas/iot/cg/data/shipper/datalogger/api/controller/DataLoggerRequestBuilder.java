@@ -8,7 +8,12 @@ import java.util.Optional;
 
 public class DataLoggerRequestBuilder {
 
-    private static final String SENSOR = "sensor";
+    public static final String DISK_SPACE_TOTAL = "disk_space_total";
+    public static final String DISK_SPACE_FREE = "disk_space_free";
+    public static final String HEAP_MEMORY_TOTAL = "heap_memory_total";
+    public static final String HEAP_MEMORY_FREE = "heap_memory_free";
+    public static final String HEAP_MEMORY_MAX = "heap_memory_max";
+    public static final String HEAP_MEMORY_USED = "heap_memory_used";
     private static final String CPU_TEMPERATURE = "cpu_temperature";
     private static final String ISO_TIME = "iso_time";
     private static final String TIME = "time";
@@ -17,13 +22,12 @@ public class DataLoggerRequestBuilder {
     private static final String HUMIDITY = "humidity";
     private static final String LIGHT = "light";
     private static final String STATUS = "status";
-    public static final String DISK_SPACE_TOTAL = "disk_space_total";
-    public static final String DISK_SPACE_FREE = "disk_space_free";
-    public static final String HEAP_MEMORY_TOTAL = "heap_memory_total";
-    public static final String HEAP_MEMORY_FREE = "heap_memory_free";
-    public static final String HEAP_MEMORY_MAX = "heap_memory_max";
-    public static final String HEAP_MEMORY_USED = "heap_memory_used";
-
+    public static final String DEVICE_ID = "device_id";
+    public static final String DEVICE_NAME = "device_name";
+    public static final String SOIL_TEMP = "soil_temp";
+    public static final String SOIL_MOISTURE = "soil_moisture";
+    public static final String PUMP_STAT = "pump_stat";
+    private static final String SENSOR = "sensor";
     private String sensor;
     private Double cpuTemperature;
     private String isoTime;
@@ -38,6 +42,11 @@ public class DataLoggerRequestBuilder {
     private Long heapMemoryFree;
     private Long heapMemoryMax;
     private Long heapMemoryUsed;
+    private String deviceId;
+    private String deviceName;
+    private Double soilTemp;
+    private Double soilMoisture;
+    private String pumpStat;
 
 
     public DataLoggerRequestBuilder sensor(String sensor) {
@@ -110,6 +119,31 @@ public class DataLoggerRequestBuilder {
         return this;
     }
 
+    public DataLoggerRequestBuilder deviceId(String deviceId) {
+        this.deviceId = deviceId;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder deviceName(String deviceName) {
+        this.deviceName = deviceName;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder soilTemp(Double soilTemp) {
+        this.soilTemp = soilTemp;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder soilMoisture(Double soilMoisture) {
+        this.soilMoisture = soilMoisture;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder pumpStat(String pumpStat) {
+        this.pumpStat = pumpStat;
+        return this;
+    }
+
     public JsonObject build() {
         JsonObjectBuilder job = Json.createObjectBuilder();
         addStringIfNotNull(job, SENSOR, sensor)
@@ -125,11 +159,16 @@ public class DataLoggerRequestBuilder {
                 .addLongIfNotNull(job, HEAP_MEMORY_TOTAL, heapMemoryTotal)
                 .addLongIfNotNull(job, HEAP_MEMORY_FREE, heapMemoryFree)
                 .addLongIfNotNull(job, HEAP_MEMORY_MAX, heapMemoryMax)
-                .addLongIfNotNull(job, HEAP_MEMORY_USED, heapMemoryUsed);
+                .addLongIfNotNull(job, HEAP_MEMORY_USED, heapMemoryUsed)
+                .addStringIfNotNull(job, DEVICE_ID, deviceId)
+                .addStringIfNotNull(job, DEVICE_NAME, deviceName)
+                .addDoubleIfNotNull(job, SOIL_TEMP, soilTemp)
+                .addDoubleIfNotNull(job, SOIL_MOISTURE, soilMoisture)
+                .addStringIfNotNull(job, PUMP_STAT, pumpStat);
         return job.build();
     }
 
-    public DataLoggerRequestBuilder addStringIfNotNull(JsonObjectBuilder jsonObjectBuilder,  String name, String value) {
+    public DataLoggerRequestBuilder addStringIfNotNull(JsonObjectBuilder jsonObjectBuilder, String name, String value) {
         Optional.ofNullable(value)
                 .ifPresent(v -> jsonObjectBuilder.add(name, value));
         return this;
@@ -141,7 +180,7 @@ public class DataLoggerRequestBuilder {
         return this;
     }
 
-    public DataLoggerRequestBuilder addDoubleIfNotNull(JsonObjectBuilder jsonObjectBuilder,  String name, Double value) {
+    public DataLoggerRequestBuilder addDoubleIfNotNull(JsonObjectBuilder jsonObjectBuilder, String name, Double value) {
         Optional.ofNullable(value)
                 .ifPresent(v -> jsonObjectBuilder.add(name, value));
         return this;
@@ -158,12 +197,17 @@ public class DataLoggerRequestBuilder {
                 && Objects.equals(light, that.light) && Objects.equals(status, that.status)
                 && Objects.equals(diskSpaceTotal, that.diskSpaceTotal) && Objects.equals(diskSpaceFree, that.diskSpaceFree)
                 && Objects.equals(heapMemoryTotal, that.heapMemoryTotal) && Objects.equals(heapMemoryFree, that.heapMemoryFree)
-                && Objects.equals(heapMemoryMax, that.heapMemoryMax) && Objects.equals(heapMemoryUsed, that.heapMemoryUsed);
+                && Objects.equals(heapMemoryMax, that.heapMemoryMax) && Objects.equals(heapMemoryUsed, that.heapMemoryUsed)
+                && Objects.equals(deviceId, that.deviceId) && Objects.equals(deviceName, that.deviceName)
+                && Objects.equals(soilTemp, that.soilTemp) && Objects.equals(soilMoisture, that.soilMoisture)
+                && Objects.equals(pumpStat, that.pumpStat);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light, status, diskSpaceTotal, diskSpaceFree, heapMemoryTotal, heapMemoryFree, heapMemoryMax, heapMemoryUsed);
+        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light, status,
+                diskSpaceTotal, diskSpaceFree, heapMemoryTotal, heapMemoryFree, heapMemoryMax, heapMemoryUsed,
+                deviceId, deviceName, soilTemp, soilMoisture, pumpStat);
     }
 
     @Override
@@ -183,6 +227,11 @@ public class DataLoggerRequestBuilder {
                 ", heapMemoryFree=" + heapMemoryFree +
                 ", heapMemoryMax=" + heapMemoryMax +
                 ", heapMemoryUsed=" + heapMemoryUsed +
+                ", deviceId=" + deviceId +
+                ", deviceName=" + deviceName +
+                ", soilTemp=" + soilTemp +
+                ", soilMoisture=" + soilMoisture +
+                ", pumpStat=" + pumpStat +
                 '}';
     }
 }

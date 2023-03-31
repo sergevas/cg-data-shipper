@@ -2,10 +2,8 @@ package dev.sergevas.iot.cg.data.shipper.function.controller;
 
 import dev.sergevas.iot.cg.data.shipper.datalogger.api.controller.DataLoggerRequestBuilder;
 import dev.sergevas.iot.cg.data.shipper.function.model.DataType;
-import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.json.*;
 import java.io.StringReader;
 import java.util.Optional;
@@ -14,9 +12,6 @@ import static dev.sergevas.iot.cg.data.shipper.function.model.SharedNames.*;
 
 @ApplicationScoped
 public class DataTransformService {
-
-    @Inject
-    Logger logger;
 
     public JsonObject toDataLoggerRequest(String sensorData) {
         JsonObject shipperRequestObj = this.readFromString(sensorData);
@@ -31,24 +26,16 @@ public class DataTransformService {
                 .isoTime(readAt);
         switch (dataType) {
             case TEMP:
-                requestBuilder.temperature(Optional.ofNullable(dataObj.getString(VALUE))
-                        .map(Double::valueOf)
-                        .orElse(null));
+                requestBuilder.temperature(toDouble(dataObj, VALUE));
                 break;
             case HUMID:
-                requestBuilder.humidity(Optional.ofNullable(dataObj.getString(VALUE))
-                        .map(Double::valueOf)
-                        .orElse(null));
+                requestBuilder.humidity(toDouble(dataObj, VALUE));
                 break;
             case PRESS:
-                requestBuilder.pressure(Optional.ofNullable(dataObj.getString(VALUE))
-                        .map(Double::valueOf)
-                        .orElse(null));
+                requestBuilder.pressure(toDouble(dataObj, VALUE));
                 break;
             case LIGHT:
-                requestBuilder.light(Optional.ofNullable(dataObj.getString(VALUE))
-                        .map(Double::valueOf)
-                        .orElse(null));
+                requestBuilder.light(toDouble(dataObj, VALUE));
                 break;
             case HEALTH:
                 JsonObject healthObj = dataObj.getJsonObject(VALUE);
@@ -111,6 +98,13 @@ public class DataTransformService {
                         .ifPresent(hmt -> Optional.ofNullable(heapMemoryFree)
                                 .ifPresent(hmf -> requestBuilder
                                         .heapMemoryUsed(heapMemoryTotal - heapMemoryFree)));
+                break;
+            case GROWER:
+                JsonObject growerObj = dataObj.getJsonObject(VALUE);
+                requestBuilder.deviceId(growerObj.getString(DEVICE_ID));
+                requestBuilder.soilTemp(toDouble(growerObj, SOIL_TEMP));
+                requestBuilder.soilMoisture(toDouble(growerObj, SOIL_MOISTURE));
+                requestBuilder.pumpStat(growerObj.getString(PUMP_STAT));
         }
         dataLoggerRequestObj = requestBuilder.build();
         return dataLoggerRequestObj;
@@ -119,5 +113,11 @@ public class DataTransformService {
     public JsonObject readFromString(String sensorData) {
         JsonReader reader = Json.createReader(new StringReader(sensorData));
         return reader.readObject();
+    }
+
+    public Double toDouble(JsonObject dataObj, String field) {
+        return Optional.ofNullable(dataObj.getString(field))
+                .map(Double::valueOf)
+                .orElse(null);
     }
 }

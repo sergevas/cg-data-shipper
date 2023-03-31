@@ -8,7 +8,8 @@ public enum DataType {
     TEMP("TEMP"),
     HUMID("HUMID"),
     PRESS("PRESS"),
-    HEALTH("HEALTH");
+    HEALTH("HEALTH"),
+    GROWER("GROWER");
 
     private String code;
 
