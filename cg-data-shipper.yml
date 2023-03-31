@@ -11,3 +11,6 @@ functions:
       topic: "cg.growlabv1.LIGHT,cg.growlabv1.TEMP,cg.growlabv1.HUMID,cg.growlabv1.PRESS,cg.growlabv1.HEALTH"
     environment:
       CG_DATA_LOGGER_URL: http://192.168.1.85:8080/function/submit-sample
+      read_timeout: "1m"
+      write_timeout: "1m"
+      exec_timeout: "1m"
