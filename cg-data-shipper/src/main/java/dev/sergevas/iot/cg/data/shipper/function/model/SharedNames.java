@@ -17,8 +17,8 @@ public class SharedNames {
     public static final String MAX_BYTES = "maxBytes";
     public static final String TOTAL_BYTES = "totalBytes";
 
-    public static final String DEVICE_ID = "device_id";
-    public static final String SOIL_TEMP = "soil_temp";
-    public static final String SOIL_MOISTURE = "soil_moisture";
-    public static final String PUMP_STAT = "pump_stat";
+    public static final String DEVICE_ID = "deviceId";
+    public static final String SOIL_TEMP = "soilTemp";
+    public static final String SOIL_MOISTURE = "soilMoisture";
+    public static final String PUMP_STAT = "pumpStat";
 }

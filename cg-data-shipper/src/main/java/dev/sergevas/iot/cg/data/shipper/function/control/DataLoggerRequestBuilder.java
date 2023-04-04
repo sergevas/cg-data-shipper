@@ -1,4 +1,4 @@
-package dev.sergevas.iot.cg.data.shipper.datalogger.api.controller;
+package dev.sergevas.iot.cg.data.shipper.function.control;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -14,6 +14,11 @@ public class DataLoggerRequestBuilder {
     public static final String HEAP_MEMORY_FREE = "heap_memory_free";
     public static final String HEAP_MEMORY_MAX = "heap_memory_max";
     public static final String HEAP_MEMORY_USED = "heap_memory_used";
+    public static final String DEVICE_ID = "device_id";
+    public static final String DEVICE_NAME = "device_name";
+    public static final String SOIL_TEMP = "soil_temp";
+    public static final String SOIL_MOISTURE = "soil_moisture";
+    public static final String PUMP_STAT = "pump_stat";
     private static final String CPU_TEMPERATURE = "cpu_temperature";
     private static final String ISO_TIME = "iso_time";
     private static final String TIME = "time";
@@ -21,12 +26,8 @@ public class DataLoggerRequestBuilder {
     private static final String PRESSURE = "pressure";
     private static final String HUMIDITY = "humidity";
     private static final String LIGHT = "light";
+    private static final String CAMERA_MODE = "camera_mode";
     private static final String STATUS = "status";
-    public static final String DEVICE_ID = "device_id";
-    public static final String DEVICE_NAME = "device_name";
-    public static final String SOIL_TEMP = "soil_temp";
-    public static final String SOIL_MOISTURE = "soil_moisture";
-    public static final String PUMP_STAT = "pump_stat";
     private static final String SENSOR = "sensor";
     private String sensor;
     private Double cpuTemperature;
@@ -35,6 +36,7 @@ public class DataLoggerRequestBuilder {
     private Double pressure;
     private Double humidity;
     private Double light;
+    private String cameraMode;
     private String status;
     private Long diskSpaceTotal;
     private Long diskSpaceFree;
@@ -81,6 +83,11 @@ public class DataLoggerRequestBuilder {
 
     public DataLoggerRequestBuilder light(Double light) {
         this.light = light;
+        return this;
+    }
+
+    public DataLoggerRequestBuilder cameraMode(String cameraMode) {
+        this.cameraMode = cameraMode;
         return this;
     }
 
@@ -153,6 +160,7 @@ public class DataLoggerRequestBuilder {
                 .addDoubleIfNotNull(job, PRESSURE, pressure)
                 .addDoubleIfNotNull(job, HUMIDITY, humidity)
                 .addDoubleIfNotNull(job, LIGHT, light)
+                .addStringIfNotNull(job, CAMERA_MODE, cameraMode)
                 .addStringIfNotNull(job, STATUS, status)
                 .addLongIfNotNull(job, DISK_SPACE_TOTAL, diskSpaceTotal)
                 .addLongIfNotNull(job, DISK_SPACE_FREE, diskSpaceFree)
@@ -194,20 +202,20 @@ public class DataLoggerRequestBuilder {
         return Objects.equals(sensor, that.sensor) && Objects.equals(cpuTemperature, that.cpuTemperature)
                 && Objects.equals(isoTime, that.isoTime) && Objects.equals(temperature, that.temperature)
                 && Objects.equals(pressure, that.pressure) && Objects.equals(humidity, that.humidity)
-                && Objects.equals(light, that.light) && Objects.equals(status, that.status)
-                && Objects.equals(diskSpaceTotal, that.diskSpaceTotal) && Objects.equals(diskSpaceFree, that.diskSpaceFree)
-                && Objects.equals(heapMemoryTotal, that.heapMemoryTotal) && Objects.equals(heapMemoryFree, that.heapMemoryFree)
-                && Objects.equals(heapMemoryMax, that.heapMemoryMax) && Objects.equals(heapMemoryUsed, that.heapMemoryUsed)
-                && Objects.equals(deviceId, that.deviceId) && Objects.equals(deviceName, that.deviceName)
-                && Objects.equals(soilTemp, that.soilTemp) && Objects.equals(soilMoisture, that.soilMoisture)
-                && Objects.equals(pumpStat, that.pumpStat);
+                && Objects.equals(light, that.light) && Objects.equals(cameraMode, that.cameraMode)
+                && Objects.equals(status, that.status) && Objects.equals(diskSpaceTotal, that.diskSpaceTotal)
+                && Objects.equals(diskSpaceFree, that.diskSpaceFree) && Objects.equals(heapMemoryTotal, that.heapMemoryTotal)
+                && Objects.equals(heapMemoryFree, that.heapMemoryFree) && Objects.equals(heapMemoryMax, that.heapMemoryMax)
+                && Objects.equals(heapMemoryUsed, that.heapMemoryUsed) && Objects.equals(deviceId, that.deviceId)
+                && Objects.equals(deviceName, that.deviceName) && Objects.equals(soilTemp, that.soilTemp)
+                && Objects.equals(soilMoisture, that.soilMoisture) && Objects.equals(pumpStat, that.pumpStat);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light, status,
-                diskSpaceTotal, diskSpaceFree, heapMemoryTotal, heapMemoryFree, heapMemoryMax, heapMemoryUsed,
-                deviceId, deviceName, soilTemp, soilMoisture, pumpStat);
+        return Objects.hash(sensor, cpuTemperature, isoTime, temperature, pressure, humidity, light, cameraMode, status,
+                diskSpaceTotal, diskSpaceFree, heapMemoryTotal, heapMemoryFree, heapMemoryMax, heapMemoryUsed, deviceId,
+                deviceName, soilTemp, soilMoisture, pumpStat);
     }
 
     @Override
@@ -220,6 +228,7 @@ public class DataLoggerRequestBuilder {
                 ", pressure=" + pressure +
                 ", humidity=" + humidity +
                 ", light=" + light +
+                ", cameraMode=" + cameraMode +
                 ", status='" + status + '\'' +
                 ", diskSpaceTotal=" + diskSpaceTotal +
                 ", diskSpaceFree=" + diskSpaceFree +

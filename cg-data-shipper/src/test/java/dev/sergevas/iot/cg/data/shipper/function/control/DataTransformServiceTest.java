@@ -1,4 +1,4 @@
-package dev.sergevas.iot.cg.data.shipper.function.controller;
+package dev.sergevas.iot.cg.data.shipper.function.control;
 
 import org.junit.jupiter.api.Test;
 
@@ -158,5 +158,91 @@ class DataTransformServiceTest {
                 .add("humidity", 55.86345305351051)
                 .build();
         assertEquals(expectedHumidObj, dataTransformService.toDataLoggerRequest(humidMsg));
+
+        String cameraModeMsg = """
+                {
+                  "event_id": "d09d44f4-cb22-4f27-a8c4-64f1e4494705",
+                  "created_at": "2023-04-04T20:18:12.86087631Z",
+                  "topic": "cg.growlabv1.CAMERA_MODE",
+                  "read_at": "2023-04-04T20:18:12.846029Z",
+                  "device_id": "0001",
+                  "device_name": "growlabv1",
+                  "data": {
+                    "type": "CAMERA_MODE",
+                    "value": "NIGHT"
+                  }
+                }""";
+
+        JsonObject expectedCameraModeObj = Json.createObjectBuilder()
+                .add("sensor", "growlabv1")
+                .add("iso_time", "2023-04-04T20:18:12.846029Z")
+                .add("camera_mode", "NIGHT")
+                .build();
+        assertEquals(expectedCameraModeObj, dataTransformService.toDataLoggerRequest(cameraModeMsg));
+
+        String growerSoilTempMsg = """
+                {
+                    "device_type": "GROWER",
+                    "event_id": "5ac84638-fd04-4238-9337-e6b1b9cb710d",
+                    "created_at": "2023-04-01T20:17:10.5270736Z",
+                    "topic": "cg.0002.SOIL_TEMP",
+                    "read_at": "2023-04-01T20:17:10.5250741Z",
+                    "device_id": "0002",
+                    "device_name": "Pepper Grow Bag 01",
+                    "data": {
+                      "unit": "°C",
+                      "type": "SOIL_TEMP",
+                      "value": 26.58
+                    }
+                  }""";
+        JsonObject expectedGrowerSoilTempObj = Json.createObjectBuilder()
+                .add("sensor", "Pepper Grow Bag 01")
+                .add("iso_time", "2023-04-01T20:17:10.5250741Z")
+                .add("soil_temp", 26.58)
+                .build();
+        assertEquals(expectedGrowerSoilTempObj, dataTransformService.toDataLoggerRequest(growerSoilTempMsg));
+
+        String growerSoilMoistureMsg = """
+                {
+                     "device_type": "GROWER",
+                     "event_id": "62c082c3-f00d-4279-9e9d-113134a92983",
+                     "created_at": "2023-04-01T20:17:10.5300409Z",
+                     "topic": "cg.0002.SOIL_MOISTURE",
+                     "read_at": "2023-04-01T20:17:10.5250741Z",
+                     "device_id": "0002",
+                     "device_name": "Pepper Grow Bag 01",
+                     "data": {
+                       "unit": "%",
+                       "type": "SOIL_MOISTURE",
+                       "value": 5.3
+                     }
+                   }""";
+        JsonObject expectedGrowerSoilMoistureObj = Json.createObjectBuilder()
+                .add("sensor", "Pepper Grow Bag 01")
+                .add("iso_time", "2023-04-01T20:17:10.5250741Z")
+                .add("soil_moisture", 5.3)
+                .build();
+        assertEquals(expectedGrowerSoilMoistureObj, dataTransformService.toDataLoggerRequest(growerSoilMoistureMsg));
+
+        String growerPumpStateMsg = """
+                {
+                      "device_type": "GROWER",
+                      "event_id": "491379a6-bc10-4d6d-b3a1-dc1a19eb571b",
+                      "created_at": "2023-04-01T20:17:10.5340389Z",
+                      "topic": "cg.0002.PUMP_STATE",
+                      "read_at": "2023-04-01T20:17:10.5250741Z",
+                      "device_id": "0002",
+                      "device_name": "Pepper Grow Bag 01",
+                      "data": {
+                        "type": "PUMP_STATE",
+                        "value": "off"
+                      }
+                    }""";
+        JsonObject expectedGrowerPumpStateObj = Json.createObjectBuilder()
+                .add("sensor", "Pepper Grow Bag 01")
+                .add("iso_time", "2023-04-01T20:17:10.5250741Z")
+                .add("pump_stat", "off")
+                .build();
+        assertEquals(expectedGrowerPumpStateObj, dataTransformService.toDataLoggerRequest(growerPumpStateMsg));
     }
 }

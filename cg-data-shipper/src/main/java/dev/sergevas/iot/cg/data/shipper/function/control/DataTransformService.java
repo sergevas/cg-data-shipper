@@ -1,6 +1,5 @@
-package dev.sergevas.iot.cg.data.shipper.function.controller;
+package dev.sergevas.iot.cg.data.shipper.function.control;
 
-import dev.sergevas.iot.cg.data.shipper.datalogger.api.controller.DataLoggerRequestBuilder;
 import dev.sergevas.iot.cg.data.shipper.function.model.DataType;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -26,16 +25,19 @@ public class DataTransformService {
                 .isoTime(readAt);
         switch (dataType) {
             case TEMP:
-                requestBuilder.temperature(toDouble(dataObj, VALUE));
+                requestBuilder.temperature(toDoubleFromString(dataObj, VALUE));
                 break;
             case HUMID:
-                requestBuilder.humidity(toDouble(dataObj, VALUE));
+                requestBuilder.humidity(toDoubleFromString(dataObj, VALUE));
                 break;
             case PRESS:
-                requestBuilder.pressure(toDouble(dataObj, VALUE));
+                requestBuilder.pressure(toDoubleFromString(dataObj, VALUE));
                 break;
             case LIGHT:
-                requestBuilder.light(toDouble(dataObj, VALUE));
+                requestBuilder.light(toDoubleFromString(dataObj, VALUE));
+                break;
+            case CAMERA_MODE:
+                requestBuilder.cameraMode(dataObj.getString(VALUE));
                 break;
             case HEALTH:
                 JsonObject healthObj = dataObj.getJsonObject(VALUE);
@@ -99,12 +101,15 @@ public class DataTransformService {
                                 .ifPresent(hmf -> requestBuilder
                                         .heapMemoryUsed(heapMemoryTotal - heapMemoryFree)));
                 break;
-            case GROWER:
-                JsonObject growerObj = dataObj.getJsonObject(VALUE);
-                requestBuilder.deviceId(growerObj.getString(DEVICE_ID));
-                requestBuilder.soilTemp(toDouble(growerObj, SOIL_TEMP));
-                requestBuilder.soilMoisture(toDouble(growerObj, SOIL_MOISTURE));
-                requestBuilder.pumpStat(growerObj.getString(PUMP_STAT));
+            case SOIL_TEMP:
+                requestBuilder.soilTemp(toDoubleFromNumber(dataObj, VALUE));
+                break;
+            case SOIL_MOISTURE:
+                requestBuilder.soilMoisture(toDoubleFromNumber(dataObj, VALUE));
+                break;
+            case PUMP_STATE:
+                requestBuilder.pumpStat(dataObj.getString(VALUE));
+                break;
         }
         dataLoggerRequestObj = requestBuilder.build();
         return dataLoggerRequestObj;
@@ -115,9 +120,15 @@ public class DataTransformService {
         return reader.readObject();
     }
 
-    public Double toDouble(JsonObject dataObj, String field) {
+    public Double toDoubleFromString(JsonObject dataObj, String field) {
         return Optional.ofNullable(dataObj.getString(field))
                 .map(Double::valueOf)
+                .orElse(null);
+    }
+
+    public Double toDoubleFromNumber(JsonObject dataObj, String field) {
+        return Optional.ofNullable(dataObj.getJsonNumber(field))
+                .map(JsonNumber::doubleValue)
                 .orElse(null);
     }
 }

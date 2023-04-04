@@ -8,8 +8,11 @@ public enum DataType {
     TEMP("TEMP"),
     HUMID("HUMID"),
     PRESS("PRESS"),
+    CAMERA_MODE("CAMERA_MODE"),
     HEALTH("HEALTH"),
-    GROWER("GROWER");
+    SOIL_TEMP("SOIL_TEMP"),
+    SOIL_MOISTURE("SOIL_MOISTURE"),
+    PUMP_STATE("PUMP_STATE");
 
     private String code;
 
