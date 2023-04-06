@@ -28,11 +28,11 @@ public class CgNatsInboundMessageHandler {
 
     public void handle(byte[] readings) {
         String marshalledReadingsData = new String(readings, StandardCharsets.UTF_8);
-        logger.info("Have got sensor readings: " + marshalledReadingsData);
+        logger.infof("CgNatsInboundMessageHandler#handle Have got sensor readings: #%s", marshalledReadingsData);
         JsonObject request = dataTransformService.toDataLoggerRequest(marshalledReadingsData);
-        logger.info("sendDataLoggerRequestStart: " + request);
+        logger.infof("sendDataLoggerRequestStart: #%s", request);
         try (Response response = dataLoggerApi.postSensorData(request)) {
-            logger.info("sendDataLoggerRequestComplete: " + response);
+            logger.infof("sendDataLoggerRequestComplete: #%s", response);
         }
     }
 }

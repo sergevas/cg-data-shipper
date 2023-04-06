@@ -12,6 +12,7 @@
 
 package dev.sergevas.iot.cg.data.shipper.datalogger.api.boundary;
 
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -35,6 +36,7 @@ public interface DataLoggerApi {
     @POST
     @Consumes({"application/json"})
     @Produces({"application/json"})
+    @Retry(delay = 0, maxDuration = 11000, jitter = 500, maxRetries = 2)
     Response postSensorData(JsonObject request) throws ApiException, ProcessingException;
 
     default String lookupAuth() {
