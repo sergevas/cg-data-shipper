@@ -18,6 +18,7 @@ public class NatsMockServer implements QuarkusTestResourceLifecycleManager {
     public Map<String, String> start() {
         EmbeddedNatsConfig config = new EmbeddedNatsConfig.Builder()
                 .withNatsServerConfig(new NatsServerConfig.Builder()
+                        .withPort(7656)
                         .withNatsVersion(NatsVersion.LATEST)
                         .build())
                 .build();
