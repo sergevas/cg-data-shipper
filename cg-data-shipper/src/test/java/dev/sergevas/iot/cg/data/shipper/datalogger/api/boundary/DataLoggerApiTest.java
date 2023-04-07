@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 @QuarkusTest
 @QuarkusTestResource(WiremockDataLoggerApi.class)
-@QuarkusTestResource(NatsMockServer.class)
 class DataLoggerApiTest {
 
     @Inject
