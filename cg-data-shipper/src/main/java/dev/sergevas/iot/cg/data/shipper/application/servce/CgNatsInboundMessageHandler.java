@@ -1,7 +1,6 @@
-package dev.sergevas.iot.cg.data.shipper.adapter.messaging;
+package dev.sergevas.iot.cg.data.shipper.application.servce;
 
-import dev.sergevas.iot.cg.data.shipper.datalogger.api.boundary.DataLoggerApi;
-import dev.sergevas.iot.cg.data.shipper.function.control.DataTransformService;
+import dev.sergevas.iot.cg.data.shipper.adapter.out.web.DataLoggerApi;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
@@ -28,11 +27,11 @@ public class CgNatsInboundMessageHandler {
 
     public void handle(byte[] readings) {
         String marshalledReadingsData = new String(readings, StandardCharsets.UTF_8);
-        logger.infof("CgNatsInboundMessageHandler#handle Have got sensor readings: #%s", marshalledReadingsData);
+        logger.infof("CgNatsInboundMessageHandler#handle Have got sensor readings: %s", marshalledReadingsData);
         JsonObject request = dataTransformService.toDataLoggerRequest(marshalledReadingsData);
-        logger.infof("sendDataLoggerRequestStart: #%s", request);
+        logger.infof("sendDataLoggerRequestStart: %s", request);
         try (Response response = dataLoggerApi.postSensorData(request)) {
-            logger.infof("sendDataLoggerRequestComplete: #%s", response);
+            logger.infof("sendDataLoggerRequestComplete. Status: %d", response.getStatus());
         }
     }
 }

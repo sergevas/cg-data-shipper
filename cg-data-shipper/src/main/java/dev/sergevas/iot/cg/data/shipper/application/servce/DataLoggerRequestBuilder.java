@@ -1,4 +1,4 @@
-package dev.sergevas.iot.cg.data.shipper.function.control;
+package dev.sergevas.iot.cg.data.shipper.application.servce;
 
 import javax.json.Json;
 import javax.json.JsonObject;

@@ -1,4 +1,4 @@
-package dev.sergevas.iot.cg.data.shipper.function.model;
+package dev.sergevas.iot.cg.data.shipper.application.domain;
 
 import java.util.Arrays;
 

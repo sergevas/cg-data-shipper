@@ -1,7 +1,7 @@
-package dev.sergevas.iot.cg.data.shipper.function.boundary;
+package dev.sergevas.iot.cg.data.shipper.adapter.in.web;
 
-import dev.sergevas.iot.cg.data.shipper.datalogger.api.boundary.DataLoggerApi;
-import dev.sergevas.iot.cg.data.shipper.function.control.DataTransformService;
+import dev.sergevas.iot.cg.data.shipper.adapter.out.web.DataLoggerApi;
+import dev.sergevas.iot.cg.data.shipper.application.servce.DataTransformService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 

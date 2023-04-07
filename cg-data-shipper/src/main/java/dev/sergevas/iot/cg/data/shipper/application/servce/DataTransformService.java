@@ -1,16 +1,29 @@
-package dev.sergevas.iot.cg.data.shipper.function.control;
+package dev.sergevas.iot.cg.data.shipper.application.servce;
 
-import dev.sergevas.iot.cg.data.shipper.function.model.DataType;
+import dev.sergevas.iot.cg.data.shipper.application.domain.DataType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.*;
 import java.io.StringReader;
 import java.util.Optional;
 
-import static dev.sergevas.iot.cg.data.shipper.function.model.SharedNames.*;
-
 @ApplicationScoped
 public class DataTransformService {
+    public static final String DEVICE_NAME = "device_name";
+    public static final String READ_AT = "read_at";
+    public static final String DATA = "data";
+    public static final String TYPE = "type";
+    public static final String VALUE = "value";
+    public static final String CHECKS = "checks";
+    public static final String NAME = "name";
+    public static final String SYSTEM_INFO = "systemInfo";
+    public static final String CPU_TEMP = "cpuTemp";
+    public static final String STATUS = "status";
+    public static final String DISK_SPACE = "diskSpace";
+    public static final String HEAP_MEMORY = "heapMemory";
+    public static final String FREE_BYTES = "freeBytes";
+    public static final String MAX_BYTES = "maxBytes";
+    public static final String TOTAL_BYTES = "totalBytes";
 
     public JsonObject toDataLoggerRequest(String sensorData) {
         JsonObject shipperRequestObj = this.readFromString(sensorData);

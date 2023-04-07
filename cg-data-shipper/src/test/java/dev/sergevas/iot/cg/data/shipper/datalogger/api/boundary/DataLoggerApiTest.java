@@ -1,6 +1,7 @@
 package dev.sergevas.iot.cg.data.shipper.datalogger.api.boundary;
 
-import dev.sergevas.iot.cg.data.shipper.function.control.DataLoggerRequestBuilder;
+import dev.sergevas.iot.cg.data.shipper.adapter.out.web.DataLoggerApi;
+import dev.sergevas.iot.cg.data.shipper.application.servce.DataLoggerRequestBuilder;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import org.eclipse.microprofile.rest.client.inject.RestClient;

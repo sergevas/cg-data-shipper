@@ -1,4 +1,4 @@
-package dev.sergevas.iot.cg.data.shipper.function.boundary;
+package dev.sergevas.iot.cg.data.shipper.adapter.in.web;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;

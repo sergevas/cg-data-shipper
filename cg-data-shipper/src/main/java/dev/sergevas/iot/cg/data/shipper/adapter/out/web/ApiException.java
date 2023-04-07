@@ -10,7 +10,7 @@
  * The version of the OpenAPI document: 1.0.0
  */
 
-package dev.sergevas.iot.cg.data.shipper.datalogger.api.boundary;
+package dev.sergevas.iot.cg.data.shipper.adapter.out.web;
 
 import javax.ws.rs.core.Response;
 
