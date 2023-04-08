@@ -16,9 +16,10 @@
 ###
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.3
 WORKDIR /work/
-RUN chown 1001 /work \
-    && chmod "g+rwX" /work \
-    && chown 1001:root /work
+RUN mkdir cert
+RUN chown 1001 -R /work \
+    && chmod "g+rwX" -R /work \
+    && chown 1001:root -R /work
 COPY --chown=1001:root target/*-runner /work/application
 
 EXPOSE 8080
