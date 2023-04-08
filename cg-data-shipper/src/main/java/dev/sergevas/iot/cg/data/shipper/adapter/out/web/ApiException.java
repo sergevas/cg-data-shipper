@@ -12,7 +12,7 @@
 
 package dev.sergevas.iot.cg.data.shipper.adapter.out.web;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 public class ApiException extends RuntimeException {
 

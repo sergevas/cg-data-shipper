@@ -16,12 +16,12 @@ import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Response;
 
 import static java.util.Base64.getEncoder;
 import static org.eclipse.microprofile.config.ConfigProvider.getConfig;

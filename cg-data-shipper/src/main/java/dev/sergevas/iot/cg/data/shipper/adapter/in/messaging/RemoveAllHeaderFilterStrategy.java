@@ -4,8 +4,8 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.apache.camel.Exchange;
 import org.apache.camel.spi.HeaderFilterStrategy;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 @ApplicationScoped
 @RegisterForReflection

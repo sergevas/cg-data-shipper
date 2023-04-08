@@ -1,10 +1,10 @@
 package dev.sergevas.iot.cg.data.shipper.adapter.in.web;
 
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
+import jakarta.json.Json;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 

@@ -2,8 +2,8 @@ package dev.sergevas.iot.cg.data.shipper.application.servce;
 
 import dev.sergevas.iot.cg.data.shipper.application.domain.DataType;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.json.*;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.*;
 import java.io.StringReader;
 import java.util.Optional;
 

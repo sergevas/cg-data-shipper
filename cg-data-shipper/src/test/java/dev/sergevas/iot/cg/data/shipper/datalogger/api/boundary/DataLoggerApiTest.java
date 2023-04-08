@@ -7,7 +7,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 @QuarkusTestResource(WiremockDataLoggerApi.class)

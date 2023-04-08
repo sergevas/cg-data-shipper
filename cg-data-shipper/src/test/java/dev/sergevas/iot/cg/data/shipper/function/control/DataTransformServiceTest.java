@@ -3,8 +3,8 @@ package dev.sergevas.iot.cg.data.shipper.function.control;
 import dev.sergevas.iot.cg.data.shipper.application.servce.DataTransformService;
 import org.junit.jupiter.api.Test;
 
-import javax.json.Json;
-import javax.json.JsonObject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

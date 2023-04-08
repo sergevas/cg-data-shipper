@@ -5,11 +5,11 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.json.JsonObject;
-import javax.ws.rs.core.Response;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.core.Response;
 import java.nio.charset.StandardCharsets;
 
 @ApplicationScoped
